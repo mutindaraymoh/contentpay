@@ -7,7 +7,7 @@ SECRET_KEY = 'django-insecure-gw!(3ebyyo+@6kqi-2p6+y+!=v2xfakaytpfgh&i@h(btetma1
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://contentpay.onrender.com/','localhost','127.0.0.1']
+ALLOWED_HOSTS = ['contentpay.onrender.com','localhost','127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
