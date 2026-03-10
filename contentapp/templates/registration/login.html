@@ -1,0 +1,44 @@
+{% extends 'contentapp/home.html' %}
+
+{% block title %}Login - ContentPay{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Login</h4>
+            </div>
+            <div class="card-body">
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    <strong>Error:</strong> Your username and password didn't match. Please try again.
+                </div>
+                {% endif %}
+                
+                <form method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label">Username:</label>
+                        <input type="text" name="username" class="form-control" id="id_username" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="id_password" class="form-label">Password:</label>
+                        <input type="password" name="password" class="form-control" id="id_password" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                </form>
+                
+                <hr>
+                
+                <p class="text-center mb-0">
+                    Don't have an account? <a href="{% url 'register' %}">Register here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

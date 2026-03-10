@@ -1,0 +1,64 @@
+{% extends 'contentapp/home.html' %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <article>
+            <h1>{{ article.title }}</h1>
+            <p class="text-muted">
+                Category: {{ article.category.name }} | 
+                Published: {{ article.created_at|date:"F j, Y" }}
+            </p>
+            
+            {% if article.thumbnail %}
+                <img src="{{ article.thumbnail.url }}" class="img-fluid mb-4" alt="{{ article.title }}">
+            {% endif %}
+            
+            {% if has_purchased %}
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle"></i> You have access to this article!
+                </div>
+                <div class="content">
+                    {{ article.content|linebreaks }}
+                </div>
+            {% else %}
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <h3>Premium Content</h3>
+                        <p class="lead">{{ article.excerpt|truncatewords:30 }}</p>
+                        <p class="display-4">KSh {{ article.price }}</p>
+                        <p class="text-muted">Pay via M-Pesa and get lifetime access</p>
+                        
+                        <!-- M-Pesa Payment Form -->
+                        {% if mpesa_available %}
+                        <form action="{% url 'initiate_mpesa_payment' %}" method="POST" class="mt-4">
+                            {% csrf_token %}
+                            <input type="hidden" name="content_type" value="article">
+                            <input type="hidden" name="content_id" value="{{ article.id }}">
+                            
+                            <div class="form-group mb-3">
+                                <label for="phone_number">M-Pesa Phone Number:</label>
+                                <input type="tel" 
+                                       class="form-control text-center" 
+                                       id="phone_number" 
+                                       name="phone_number" 
+                                       placeholder="254712345678"
+                                       pattern="254[0-9]{9}"
+                                       required>
+                                <small class="text-muted">Format: 254XXXXXXXXX (e.g., 254712345678)</small>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-mobile-alt"></i> Pay with M-Pesa
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+        </article>
+    </div>
+</div>
+{% endblock %}
